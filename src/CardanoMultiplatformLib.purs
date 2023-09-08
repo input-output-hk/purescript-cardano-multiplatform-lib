@@ -26,17 +26,17 @@ import Prelude
 import CardanoMultiplatformLib.Address (Address, AddressObject, addressObject, address) as Exports
 import CardanoMultiplatformLib.Address (AddressObject, addressObject, stakeCredentialObject)
 import CardanoMultiplatformLib.Address as Address
-import CardanoMultiplatformLib.CostModel (CostModelObject(..), Costmdls(..), CostmdlsObject(..), costModel, costModelObject, costmdls, costmdlsObject)
-import CardanoMultiplatformLib.CostModel as Exports
-import CardanoMultiplatformLib.Ed25519KeyHash (Ed25519KeyHashObject(..), ed25519KeyHashObject)
+import CardanoMultiplatformLib.CostModel (CostmdlsObject, costmdls)
+import CardanoMultiplatformLib.CostModel (CostModel(..), CostModelObject(..), Costmdls(..), CostmdlsObject(..), Language(..), LanguageObject(..), Languages, LanguagesObject, costModel, costModelObject, costmdls, costmdlsObject, language, languageObject) as Exports
+import CardanoMultiplatformLib.Ed25519KeyHash (Ed25519KeyHashObject, ed25519KeyHashObject)
 import CardanoMultiplatformLib.Lib (Lib)
 import CardanoMultiplatformLib.Lib (Lib) as Exports
 import CardanoMultiplatformLib.Lib as Lib
-import CardanoMultiplatformLib.Transaction (BigNumObject(..), TransactionBodyObject, TransactionObject, TransactionWitnessSetObject, ValueObject, assetNameObject, assetNamesObject, assetsObject, bigNum, bigNumObject, multiAssetObject, value, valueObject)
+import CardanoMultiplatformLib.Transaction (BigNumObject, TransactionBodyObject, TransactionObject, TransactionWitnessSetObject, ValueObject, assetNameObject, assetNamesObject, assetsObject, bigNum, bigNumObject, multiAssetObject, value, valueObject)
 import CardanoMultiplatformLib.Transaction as Transaction
-import CardanoMultiplatformLib.Types (Bech32, Cbor, CborHex, bech32ToString, cborHexToCbor, cborHexToHex, cborToCborHex, unsafeBech32)
+import CardanoMultiplatformLib.Types (Bech32, Cbor, CborHex, bech32ToString, cborHexToCbor, cborHexToHex, unsafeBech32)
 import CardanoMultiplatformLib.Types (CborHex(..), Bech32, cborToCborHex, cborHexToHex, bech32ToString) as Exports
-import Contrib.CardanoMultiplatformLib.ScriptHash (ScriptHashObject(..), scriptHashObject, scriptHashesObject)
+import Contrib.CardanoMultiplatformLib.ScriptHash (ScriptHashObject, scriptHashObject, scriptHashesObject)
 import Control.Monad.Error.Class (throwError)
 import Control.Monad.Except (catchError)
 import Control.Monad.Reader (ReaderT, runReaderT)
@@ -58,7 +58,6 @@ import Data.TraversableWithIndex (forWithIndex)
 import Data.Tuple.Nested ((/\))
 import Data.Undefined.NoProblem (Opt, toMaybe)
 import Data.Undefined.NoProblem as NoProblem
-import Debug (traceM)
 import Effect (Effect)
 import Effect.Aff (Aff)
 import Effect.Class (class MonadEffect, liftEffect)
@@ -68,11 +67,8 @@ import Effect.Ref as Ref
 import HexString (hexToString)
 import HexString as HexString
 import JS.Object (EffectMth0, JSObject, runEffectMth0)
-import Partial.Unsafe (unsafeCrashWith)
 import Promise.Aff (Promise, toAff)
 import Type.Prelude (Proxy(..))
-import Web.Encoding.TextDecoder as TextDecoder
-import Web.Encoding.UtfLabel (utf8)
 
 -- TODO: Move to Lib module
 foreign import importLibImpl :: Effect (Nullable (Promise Lib))
@@ -167,7 +163,6 @@ bigNumObjToBigInt bigNumObj = do
 
 valueMapFromValueObject :: ValueObject -> GarbageCollector ValueMap
 valueMapFromValueObject valObj = do
-  textDecoder <- liftEffect $ TextDecoder.new utf8
   possibleMultiAssetObj <- allocateOpt $ valueObject.multiasset valObj
   coinObj <- allocate $ valueObject.coin valObj
   lovelace <- bigNumObjToBigInt coinObj
@@ -191,10 +186,7 @@ valueMapFromValueObject valObj = do
             assetNamesLen <- liftEffect $ assetNamesObject.len assetNamesObj
             ((policyId /\ _) <<< Map.fromFoldable) <$> forWithIndex (Array.replicate assetNamesLen unit) \idx' _ -> do
               assetNameObj <- allocate $ assetNamesObject.get assetNamesObj idx'
-
               nameUint8Array <- liftEffect $ assetNameObject.name assetNameObj
-
-              -- assetName <- liftEffect $ TextDecoder.decode nameUint8Array textDecoder
               let
                 assetName = hexToString (HexString.encode nameUint8Array)
               bigNumObj <- allocate $ multiAssetObject.get_asset multiAssetObj scriptHashObj assetNameObj
