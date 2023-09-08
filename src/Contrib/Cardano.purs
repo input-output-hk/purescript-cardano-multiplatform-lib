@@ -118,6 +118,7 @@ assetIdToString (AssetId policyId _) = policyIdToHexString policyId
 
 newtype Value = Value (Map AssetId Quantity)
 
+derive instance Newtype Value _
 derive newtype instance Semigroup Value
 derive newtype instance Monoid Value
 
