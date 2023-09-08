@@ -67,7 +67,6 @@ in  upstream
         , "transformers"
         , "tuples"
         , "typelevel-prelude"
-        , "unfoldable"
         ]
         "https://github.com/input-output-hk/purescript-marlowe.git"
         "main"

@@ -4,10 +4,12 @@
   , "argonaut"
   , "arraybuffer-types"
   , "arrays"
+  , "bifunctors"
   , "debug"
   , "effect"
   , "either"
   , "exceptions"
+  , "foreign-object"
   , "foldable-traversable"
   , "js-object"
   , "js-promise-aff"
@@ -25,6 +27,7 @@
   , "tuples"
   , "typelevel-prelude"
   , "undefined-is-not-a-problem"
+  , "unfoldable"
   , "web-encoding"
   ]
 , packages = ./packages.dhall
