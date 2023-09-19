@@ -36,7 +36,7 @@ import CardanoMultiplatformLib.Transaction (BigNumObject, TransactionBodyObject,
 import CardanoMultiplatformLib.Transaction as Transaction
 import CardanoMultiplatformLib.Types (Bech32, Cbor, CborHex, bech32ToString, cborHexToCbor, cborHexToHex, unsafeBech32)
 import CardanoMultiplatformLib.Types (CborHex(..), Bech32, cborToCborHex, cborHexToHex, bech32ToString) as Exports
-import Contrib.CardanoMultiplatformLib.ScriptHash (ScriptHashObject, scriptHashObject, scriptHashesObject)
+import CardanoMultiplatformLib.ScriptHash (ScriptHashObject, scriptHashObject, scriptHashesObject)
 import Control.Monad.Error.Class (throwError)
 import Control.Monad.Except (catchError)
 import Control.Monad.Reader (ReaderT, runReaderT)

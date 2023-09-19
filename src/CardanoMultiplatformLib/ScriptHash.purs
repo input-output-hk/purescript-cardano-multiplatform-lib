@@ -1,4 +1,4 @@
-module Contrib.CardanoMultiplatformLib.ScriptHash
+module CardanoMultiplatformLib.ScriptHash
   ( ScriptHash(..)
   , ScriptHashObject(..)
   , ScriptHashes(..)

@@ -4,7 +4,7 @@ import Prelude
 
 import CardanoMultiplatformLib.Address (AddressObject)
 import CardanoMultiplatformLib.Types (Bech32, Cbor, CborHex, JsonString)
-import Contrib.CardanoMultiplatformLib.ScriptHash (ScriptHashObject, ScriptHashesObject)
+import CardanoMultiplatformLib.ScriptHash (ScriptHashObject, ScriptHashesObject)
 import Data.Argonaut (Json)
 import Data.ArrayBuffer.Types (Uint8Array)
 import Data.Newtype (class Newtype)

@@ -1,4 +1,4 @@
-module Contrib.Cardano where
+module Cardano where
 
 import Prelude
 

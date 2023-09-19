@@ -4,7 +4,7 @@ import Prelude
 
 import CardanoMultiplatformLib.Ed25519KeyHash (Ed25519KeyHash, Ed25519KeyHashObject)
 import CardanoMultiplatformLib.Types (Bech32, Cbor, JsonString)
-import Contrib.CardanoMultiplatformLib.ScriptHash (ScriptHashObject)
+import CardanoMultiplatformLib.ScriptHash (ScriptHashObject)
 import Data.Argonaut (Json)
 import Data.Newtype (class Newtype)
 import Data.Undefined.NoProblem (Opt)
