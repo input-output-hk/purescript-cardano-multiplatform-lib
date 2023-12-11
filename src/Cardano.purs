@@ -240,6 +240,29 @@ nonAdaAssets (Value m) = NonAdaAssets do
     AdaAssetId -> Nothing
     AssetId cs tn -> Just ((cs /\ tn) /\ q)
 
+
+nonAdaAssetsToValue :: NonAdaAssets -> Value
+nonAdaAssetsToValue (NonAdaAssets m) = do
+  let
+    elems :: Array ((PolicyId /\ AssetName) /\ Quantity)
+    elems = Map.toUnfoldable m
+
+  Value $ Map.fromFoldable $ elems <#> \((policyId /\ assetName) /\ quantity) ->
+    AssetId policyId assetName /\ quantity
+
+-- UTxO has to contain at least `minADA` lovelace
+-- required by the protocol.
+newtype UTxOValue = UTxOValue
+  { nonAdaAssets :: NonAdaAssets
+  , lovelace :: Lovelace
+  }
+derive instance Newtype UTxOValue _
+derive newtype instance Eq UTxOValue
+
+utxoValueToValue :: UTxOValue -> Value
+utxoValueToValue (UTxOValue { nonAdaAssets: na, lovelace: l }) =
+  nonAdaAssetsToValue na <> lovelaceToValue l
+
 newtype Lovelace = Lovelace BigInt
 derive instance Eq Lovelace
 derive instance Ord Lovelace

@@ -1,5 +1,4 @@
-{ name = "my-project"
-, dependencies =
+{ dependencies =
   [ "aff"
   , "argonaut"
   , "arraybuffer-types"
@@ -28,6 +27,9 @@
   , "unfoldable"
   , "web-encoding"
   ]
+, name = "cardano-multiplatform-lib"
 , packages = ./packages.dhall
+, repo = "https://github.com/input-output-hk/purescript-cardano-multiplatform-lib"
 , sources = [ "src/**/*.purs", "test/**/*.purs" ]
+, version = "v0.0.1"
 }
